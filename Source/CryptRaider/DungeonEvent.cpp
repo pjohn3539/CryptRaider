@@ -12,7 +12,6 @@ UDungeonEvent::UDungeonEvent()
 
 	// ...
 
-
 }
 
 

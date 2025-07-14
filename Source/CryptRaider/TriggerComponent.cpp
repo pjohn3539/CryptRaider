@@ -2,6 +2,7 @@
 
 
 #include "TriggerComponent.h"
+#include "CryptRaiderGameplayTags.h"
 
 // Sets default values for this component's properties
 UTriggerComponent::UTriggerComponent()
@@ -35,6 +36,11 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
             }
             actorFound->DisableComponentsSimulatePhysics();
         }
+
+        if (!mover->GetShouldReset()) {
+		    actorFound->Tags.Add(CryptRaiderGameplayTags::DEACTIVATED_TAG);
+        }
+
         mover->SetShouldActivate(true);
     } else {
         mover->SetShouldActivate(false);

@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "Math/UnrealMathUtility.h"
+#include "CryptRaiderGameplayTags.h"
 
 // Sets default values for this component's properties
 UGrabber::UGrabber()
@@ -66,21 +67,24 @@ void UGrabber::Grab() {
 	FHitResult HitResult;
 
 	if (GetGrabbableInReach(HitResult)) {
-		CurrentHoldDistance = holdDistance;
-		
-		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
-		HitComponent->SetSimulatePhysics(true);
-		HitComponent->WakeAllRigidBodies();
 		AActor* HitActor = HitResult.GetActor();
-		HitActor->Tags.Add(GRABBED_TAG);
-		HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		physicsHandle->GrabComponentAtLocationWithRotation(
-				HitComponent,
-				NAME_None,
-				HitResult.ImpactPoint,
-				GetComponentRotation()
-		);
 
+		if (!HitActor->ActorHasTag(CryptRaiderGameplayTags::DEACTIVATED_TAG)) {
+			CurrentHoldDistance = holdDistance;
+			
+			UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+			HitComponent->SetSimulatePhysics(true);
+			HitComponent->WakeAllRigidBodies();
+			
+			HitActor->Tags.Add(CryptRaiderGameplayTags::GRABBED_TAG);
+			HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+			physicsHandle->GrabComponentAtLocationWithRotation(
+					HitComponent,
+					NAME_None,
+					HitResult.ImpactPoint,
+					GetComponentRotation()
+			);
+		}
 		//DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10, 10, FColor::Red, false, 5);
 		//DrawDebugSphere(GetWorld(), HitResult.Location, 10, 10, FColor::Green, false, 5);
 		//UE_LOG(LogTemp, Display, TEXT("The actor that has been hit: %s"), *HitResult.GetActor()->GetActorNameOrLabel());
@@ -114,7 +118,7 @@ void UGrabber::Release() {
 	//condition statement.
 	if (physicsHandle && physicsHandle->GetGrabbedComponent()) {
 			AActor* GrabbedActor = physicsHandle->GetGrabbedComponent()->GetOwner();
-			GrabbedActor->Tags.Remove(GRABBED_TAG);
+			GrabbedActor->Tags.Remove(CryptRaiderGameplayTags::GRABBED_TAG);
 			physicsHandle->ReleaseComponent();
 			CurrentRotationOffset = FRotator::ZeroRotator;
 			holdDistance = originalHoldDistance;

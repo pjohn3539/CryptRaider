@@ -88,7 +88,4 @@ private:
 	UPROPERTY(EditAnywhere)
 	float holdDistanceInterpSpeed = 10.0f;
 
-	const FName GRABBED_TAG = "Grabbed";
-
-
 };

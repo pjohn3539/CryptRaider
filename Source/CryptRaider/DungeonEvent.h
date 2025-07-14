@@ -18,6 +18,8 @@ public:
 
 	void SetCollisionEnabled(bool active);
 
+	bool GetShouldReset() const { return shouldReset; }
+
 	bool GetShouldTakeObject() const { return shouldTakeObject; }
 
 	bool GetOnlyReactOnRelease() const { return onlyReactOnRelease; }
@@ -33,6 +35,11 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void SetShouldActivate(bool move);
+
+	void MakeObjectNoLongerInteractable();
+
+public:
+	static const FName DEACTIVATED_TAG;
 
 protected:
 
@@ -57,4 +64,5 @@ protected:
 	bool onlyReactOnRelease = true;
 
 	bool HasActivated = false;
+
 };
