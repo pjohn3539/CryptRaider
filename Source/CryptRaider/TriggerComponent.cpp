@@ -47,7 +47,7 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
     }
 }
 
-void UTriggerComponent::SetMover(UMover* newMover) {
+void UTriggerComponent::SetMoverComponent(UMoverComponent* newMover) {
     mover = newMover;
 }
 

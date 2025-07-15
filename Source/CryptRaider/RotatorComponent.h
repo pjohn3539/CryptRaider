@@ -3,14 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DungeonEvent.h"
+#include "DungeonEventComponent.h"
+#include "RotatorArrayElement.h"
 #include "RotatorComponent.generated.h"
 
 /**
  * 
  */
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class CRYPTRAIDER_API URotatorComponent : public UDungeonEvent
+class CRYPTRAIDER_API URotatorComponent : public UDungeonEventComponent
 {
 	GENERATED_BODY()
 
@@ -29,8 +30,6 @@ public:
 private: 
 
 	UPROPERTY(EditAnywhere)
-	FRotator RotationOffset;
-
-	FRotator originalRotation;
+	TArray<FRotatorArrayElement> listOfRotatingObjects;
 
 };

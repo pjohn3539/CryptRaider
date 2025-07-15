@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
-#include "Mover.h"
+#include "MoverComponent.h"
 #include "TriggerComponent.generated.h"
 
 /**
@@ -29,14 +29,14 @@ protected:
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void SetMover(UMover* newMover);
+	void SetMoverComponent(UMoverComponent* newMover);
 
 private:
 
 	UPROPERTY(EditAnywhere)
 	FName tagNameForTrigger = "Key";
 
-	UMover* mover;
+	UMoverComponent* mover;
 
 	const FName GRABBED_TAG = "Grabbed";
 

@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "DungeonEvent.generated.h"
+#include "DungeonEventComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom))
-class CRYPTRAIDER_API UDungeonEvent : public UActorComponent
+class CRYPTRAIDER_API UDungeonEventComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UDungeonEvent();
+	UDungeonEventComponent();
 
 	void SetCollisionEnabled(bool active);
 

@@ -19,7 +19,9 @@ void URotatorComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	originalRotation = GetOwner()->GetActorRotation();
+	for (FRotatorArrayElement element : listOfRotatingObjects) {
+		element.originalRotation = element.rotatingMeshComponent->GetComponentRotation();
+	}
 	
 }
 

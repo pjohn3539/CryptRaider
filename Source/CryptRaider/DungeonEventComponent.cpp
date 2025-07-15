@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DungeonEvent.h"
+#include "DungeonEventComponent.h"
 
 // Sets default values for this component's properties
-UDungeonEvent::UDungeonEvent()
+UDungeonEventComponent::UDungeonEventComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -16,7 +16,7 @@ UDungeonEvent::UDungeonEvent()
 
 
 // Called when the game starts
-void UDungeonEvent::BeginPlay()
+void UDungeonEventComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -28,14 +28,14 @@ void UDungeonEvent::BeginPlay()
 
 
 // Called every frame
-void UDungeonEvent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UDungeonEventComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
 
-void UDungeonEvent::SetShouldActivate(bool active) {
+void UDungeonEventComponent::SetShouldActivate(bool active) {
 	if (shouldReset) {
 		ShouldActivate = active;
 		if (turnOffCollisonWhenActivated) {
@@ -50,7 +50,7 @@ void UDungeonEvent::SetShouldActivate(bool active) {
 	}
 }
 
-void UDungeonEvent::SetCollisionEnabled(bool active) {
+void UDungeonEventComponent::SetCollisionEnabled(bool active) {
 	UStaticMeshComponent* mesh = GetOwner()->GetComponentByClass<UStaticMeshComponent>();
 	if (mesh) {
 		if (active) {

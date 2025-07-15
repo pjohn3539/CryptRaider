@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "DungeonEvent.h"
-#include "Mover.generated.h"
+#include "DungeonEventComponent.h"
+#include "MoverComponent.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class CRYPTRAIDER_API UMover : public UDungeonEvent
+class CRYPTRAIDER_API UMoverComponent : public UDungeonEventComponent
 {
 	GENERATED_BODY()
 
 public:	
 	// Sets default values for this component's properties
-	UMover();
+	UMoverComponent();
 
 protected:
 	// Called when the game starts
