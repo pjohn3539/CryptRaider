@@ -54,6 +54,8 @@ bool UGrabber::GetGrabbableInReach(FHitResult& outHitResult)  const {
 	FCollisionShape Sphere = FCollisionShape::MakeSphere(grabRadius);
 	bool HasHit = GetWorld()->SweepSingleByChannel(outHitResult, start, end, FQuat::Identity, ECC_GameTraceChannel2, Sphere);
 
+	UE_LOG(LogTemp, Display, TEXT("Has Hit: %s"), HasHit ? TEXT("True") : TEXT("False"));
+	
 	return HasHit;
 }
 

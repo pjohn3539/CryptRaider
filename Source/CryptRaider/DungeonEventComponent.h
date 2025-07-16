@@ -34,12 +34,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void SetShouldActivate(bool move);
+	void SetShouldActivate(bool active);
 
 	void MakeObjectNoLongerInteractable();
-
-public:
-	static const FName DEACTIVATED_TAG;
 
 protected:
 

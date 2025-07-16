@@ -29,16 +29,14 @@ protected:
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void SetMoverComponent(UMoverComponent* newMover);
+	void SetDungeonEventComponent(UDungeonEventComponent* newDungeonEvent);
 
 private:
 
 	UPROPERTY(EditAnywhere)
 	FName tagNameForTrigger = "Key";
 
-	UMoverComponent* mover;
-
-	const FName GRABBED_TAG = "Grabbed";
+	UDungeonEventComponent* dungeonEventComponent;
 
 	AActor* CheckOverlappingActorsForTag() const;
 };

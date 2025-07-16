@@ -30,25 +30,25 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
     if (actorFound) {
         UPrimitiveComponent*  component = Cast<UPrimitiveComponent>(actorFound->GetRootComponent());
 
-        if (mover->GetShouldTakeObject()) {
+        if (dungeonEventComponent->GetShouldTakeObject()) {
             if (component) {
                 component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform, NAME_None);
             }
             actorFound->DisableComponentsSimulatePhysics();
         }
 
-        if (!mover->GetShouldReset()) {
+        if (!dungeonEventComponent->GetShouldReset()) {
 		    actorFound->Tags.Add(CryptRaiderGameplayTags::DEACTIVATED_TAG);
         }
 
-        mover->SetShouldActivate(true);
+        dungeonEventComponent->SetShouldActivate(true);
     } else {
-        mover->SetShouldActivate(false);
+        dungeonEventComponent->SetShouldActivate(false);
     }
 }
 
-void UTriggerComponent::SetMoverComponent(UMoverComponent* newMover) {
-    mover = newMover;
+void UTriggerComponent::SetDungeonEventComponent(UDungeonEventComponent* newDungeonEventComponent) {
+    dungeonEventComponent = newDungeonEventComponent;
 }
 
 AActor* UTriggerComponent::CheckOverlappingActorsForTag() const {
@@ -57,7 +57,8 @@ AActor* UTriggerComponent::CheckOverlappingActorsForTag() const {
 
     if (overlappingActors.Num() > 0){
         for (AActor* actor : overlappingActors) {
-           if ((actor->ActorHasTag(tagNameForTrigger) && !actor->ActorHasTag(GRABBED_TAG)) || (actor->ActorHasTag(tagNameForTrigger) && !mover->GetOnlyReactOnRelease())) {
+           if ((actor->ActorHasTag(tagNameForTrigger) && !actor->ActorHasTag(CryptRaiderGameplayTags::GRABBED_TAG)) 
+           || (actor->ActorHasTag(tagNameForTrigger) && !dungeonEventComponent->GetOnlyReactOnRelease())) {
                 return actor;
            }
         }

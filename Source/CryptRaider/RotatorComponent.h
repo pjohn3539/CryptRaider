@@ -27,9 +27,11 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	void Setup();
+
 private: 
 
 	UPROPERTY(EditAnywhere)
-	TArray<FRotatorArrayElement> listOfRotatingObjects;
+	TArray<FRotatorArrayElement> listOfRotatingObjects; 
 
 };

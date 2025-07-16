@@ -2,6 +2,7 @@
 
 
 #include "RotatorComponent.h"
+#include "Math/UnrealMathUtility.h"
 
 // Sets default values for this component's properties
 URotatorComponent::URotatorComponent()
@@ -19,9 +20,7 @@ void URotatorComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for (FRotatorArrayElement element : listOfRotatingObjects) {
-		element.originalRotation = element.rotatingMeshComponent->GetComponentRotation();
-	}
+	Setup();
 	
 }
 
@@ -31,4 +30,57 @@ void URotatorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+
+	for (FRotatorArrayElement element : listOfRotatingObjects)
+	{
+		FRotator targetRotation = element.originalRotation;
+
+		if (ShouldActivate) {
+			targetRotation = element.originalRotation + element.rotationOffset;
+		} 
+
+		FRotator currentRotation = element.rotatingMeshComponent->GetComponentRotation();
+		float speed = FVector(
+			element.rotationOffset.Pitch,
+			element.rotationOffset.Yaw,
+			element.rotationOffset.Roll
+		).Size() / durationTime;
+
+
+		FRotator newRotation = FMath::RInterpConstantTo(currentRotation, targetRotation, DeltaTime, speed);
+		element.rotatingMeshComponent->SetWorldRotation(newRotation);
+	}
+
+}
+
+void URotatorComponent::Setup() {
+	for (FRotatorArrayElement& element : listOfRotatingObjects) {
+
+		TArray<UStaticMeshComponent*> Components;
+		UStaticMeshComponent* meshComponent = nullptr;
+
+		if (!element.rotatingActor)
+		{
+			UE_LOG(LogTemp, Fatal, TEXT("RotatorComponent::Setup - Null actor in rotating object list!"));
+			continue; // or return; or break; depending on behavior you want
+		}
+
+    	element.rotatingActor->GetComponents<UStaticMeshComponent>(Components);
+
+		for (UStaticMeshComponent* Component : Components)
+		{
+			if (Component && Component->GetName() == element.nameOfMeshComponent)
+			{
+				element.rotatingMeshComponent = Component;
+				break;
+			}
+		}
+
+		if (!element.rotatingMeshComponent){
+			UE_LOG(LogTemp, Fatal, TEXT("Invalid Component Name: %s"), *element.nameOfMeshComponent);
+		}
+
+		element.originalRotation = element.rotatingMeshComponent->GetComponentRotation();
+
+	}
 }

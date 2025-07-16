@@ -13,11 +13,17 @@ struct FRotatorArrayElement
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	UMeshComponent* rotatingMeshComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AActor* rotatingActor;
 
-	UPROPERTY(EditAnywhere)
-	FRotator RotationOffset;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString nameOfMeshComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FRotator rotationOffset;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UMeshComponent* rotatingMeshComponent;
 
 	FRotator originalRotation;
 
