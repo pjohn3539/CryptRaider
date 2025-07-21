@@ -19,6 +19,14 @@ void UTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+    GetOwner()->GetComponents<UDungeonEventComponent>(dungeonEventComponents);
+
+    for (UDungeonEventComponent* event: dungeonEventComponents) {
+        if (event->GetIsMainEvent()) {
+            mainDungeonEventComponents = event;
+            break;
+        }
+    }
 }
 
 void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -30,25 +38,29 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
     if (actorFound) {
         UPrimitiveComponent*  component = Cast<UPrimitiveComponent>(actorFound->GetRootComponent());
 
-        if (dungeonEventComponent->GetShouldTakeObject()) {
+        if (mainDungeonEventComponents->GetShouldTakeObject()) {
             if (component) {
                 component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform, NAME_None);
             }
             actorFound->DisableComponentsSimulatePhysics();
         }
 
-        if (!dungeonEventComponent->GetShouldReset()) {
+        if (!mainDungeonEventComponents->GetShouldReset()) {
 		    actorFound->Tags.Add(CryptRaiderGameplayTags::DEACTIVATED_TAG);
         }
 
-        dungeonEventComponent->SetShouldActivate(true);
+        for (UDungeonEventComponent* event: dungeonEventComponents) {
+            event->SetShouldActivate(true);
+        }
     } else {
-        dungeonEventComponent->SetShouldActivate(false);
+        for (UDungeonEventComponent* event: dungeonEventComponents) {
+            event->SetShouldActivate(false);
+        }
     }
 }
 
 void UTriggerComponent::SetDungeonEventComponent(UDungeonEventComponent* newDungeonEventComponent) {
-    dungeonEventComponent = newDungeonEventComponent;
+    //dungeonEventComponent = newDungeonEventComponent;
 }
 
 AActor* UTriggerComponent::CheckOverlappingActorsForTag() const {
@@ -58,7 +70,7 @@ AActor* UTriggerComponent::CheckOverlappingActorsForTag() const {
     if (overlappingActors.Num() > 0){
         for (AActor* actor : overlappingActors) {
            if ((actor->ActorHasTag(tagNameForTrigger) && !actor->ActorHasTag(CryptRaiderGameplayTags::GRABBED_TAG)) 
-           || (actor->ActorHasTag(tagNameForTrigger) && !dungeonEventComponent->GetOnlyReactOnRelease())) {
+           || (actor->ActorHasTag(tagNameForTrigger) && !mainDungeonEventComponents->GetOnlyReactOnRelease())) {
                 return actor;
            }
         }

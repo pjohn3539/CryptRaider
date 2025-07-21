@@ -26,6 +26,12 @@ public:
 
 	bool GetTurnOffCollisonWhenActivated() const { return turnOffCollisonWhenActivated; } 
 
+	FName GetAssociatedSectionName() const { return AssociatedSectionName; }
+
+	bool GetCompletedStatus() const { return completed; } 
+
+	bool GetIsMainEvent() const { return IsMainEvent; } 
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -39,6 +45,12 @@ public:
 	void MakeObjectNoLongerInteractable();
 
 protected:
+
+	UPROPERTY(EditAnywhere)
+	bool IsMainEvent = true;
+
+	UPROPERTY(EditAnywhere)
+	FName AssociatedSectionName;
 
 	ECollisionEnabled::Type originalCollisionEnabled;
 	
@@ -61,5 +73,7 @@ protected:
 	bool onlyReactOnRelease = true;
 
 	bool HasActivated = false;
+
+	bool completed = false;
 
 };

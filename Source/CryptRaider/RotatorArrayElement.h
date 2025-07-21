@@ -22,7 +22,6 @@ struct FRotatorArrayElement
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FRotator rotationOffset;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UMeshComponent* rotatingMeshComponent;
 
 	FRotator originalRotation;

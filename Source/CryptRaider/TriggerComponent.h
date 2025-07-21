@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
-#include "MoverComponent.h"
+#include "DungeonEventComponent.h"
 #include "TriggerComponent.generated.h"
 
 /**
@@ -36,7 +36,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	FName tagNameForTrigger = "Key";
 
-	UDungeonEventComponent* dungeonEventComponent;
+	UPROPERTY(EditAnywhere)
+	TArray<UDungeonEventComponent*> dungeonEventComponents;
+
+	UDungeonEventComponent* mainDungeonEventComponents;
 
 	AActor* CheckOverlappingActorsForTag() const;
 };
