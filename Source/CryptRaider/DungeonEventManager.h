@@ -30,7 +30,7 @@ private:
 	
 	void SetupMap();
 	
-	void SetupActiveEvents();
+	void SetupActiveEventSections();
 
 	UPROPERTY(EditAnywhere)
 	TMap<FName, FDungeonEventSection> DungeonEventMap;

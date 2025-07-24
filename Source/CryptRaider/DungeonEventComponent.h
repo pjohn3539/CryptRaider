@@ -64,7 +64,7 @@ protected:
 	bool turnOffCollisonWhenActivated = false;
 	
 	UPROPERTY(EditAnywhere)
-	bool shouldReset = true;
+	bool shouldReset = false;
 
 	UPROPERTY(EditAnywhere)
 	bool shouldTakeObject = true;

@@ -16,7 +16,7 @@ void ADungeonEventManager::BeginPlay()
 {
 	Super::BeginPlay();
     SetupMap();
-    SetupActiveEvents();
+    SetupActiveEventSections();
 }
 
 void ADungeonEventManager::SetupMap() {
@@ -53,7 +53,7 @@ void ADungeonEventManager::SetupMap() {
     }
 }
 
-void ADungeonEventManager::SetupActiveEvents(){
+void ADungeonEventManager::SetupActiveEventSections(){
 
     
 }

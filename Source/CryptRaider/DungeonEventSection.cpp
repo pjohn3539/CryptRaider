@@ -19,3 +19,10 @@ void FDungeonEventSection::Completed()
 
     ///Activate other Sections
 }
+
+
+void FDungeonEventSection::SetSectionActive(bool active)
+{
+    SectionActive = active;
+
+}

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DungeonEventComponentArray.h"
+#include "DungeonEventComponent.h"
 #include "DungeonEventSection.generated.h"
 
 /**
@@ -15,6 +15,8 @@ struct CRYPTRAIDER_API FDungeonEventSection
 	GENERATED_BODY()
 
 	FDungeonEventSection();
+
+	void SetSectionActive(bool active);
 
 	void Completed();
 

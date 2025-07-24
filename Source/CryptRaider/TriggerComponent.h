@@ -29,7 +29,7 @@ protected:
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void SetDungeonEventComponent(UDungeonEventComponent* newDungeonEvent);
+	void SetDungeonEventComponents(TArray<UDungeonEventComponent*> newDungeonEventComponents);
 
 private:
 
