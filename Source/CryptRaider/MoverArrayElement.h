@@ -3,27 +3,27 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "RotatorArrayElement.generated.h"
+#include "MoverArrayElement.generated.h"
 
 /**
  * 
  */
 USTRUCT(BlueprintType)
-struct FRotatorArrayElement
+struct FMoverArrayElement
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	AActor* rotatingActor;
+	AActor* movingActor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString nameOfMeshComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FRotator rotationOffset;
+	FVector MoveOffset;
 	
-	USceneComponent* rotatingMeshComponent;
+	USceneComponent* movingMeshComponent;
 
-	FRotator originalRotation;
+	FVector originalLocation;
 
 };

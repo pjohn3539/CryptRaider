@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MoverArrayElement.h"
 #include "MoverEventData.generated.h"
 
 /**
@@ -17,10 +18,6 @@ struct FMoverEventData
 
 	void Tick(float DeltaTime, float Duration, bool IsActive);
 
-	AActor* dataOwner;
-
 	UPROPERTY(EditAnywhere)
-	FVector MoveOffset;
-
-	FVector originalLocation;
+	TArray<FMoverArrayElement> listOfMovingObjects; 
 };

@@ -10,10 +10,10 @@ void FRotatorEventData::Setup()
 	{
 		if (!element.rotatingActor) continue;
 
-		TArray<UStaticMeshComponent*> Components;
-		element.rotatingActor->GetComponents<UStaticMeshComponent>(Components);
+		TArray<USceneComponent*> Components;
+		element.rotatingActor->GetComponents<USceneComponent>(Components);
 
-		for (UStaticMeshComponent* Comp : Components)
+		for (USceneComponent* Comp : Components)
 		{
 			if (Comp->GetName() == element.nameOfMeshComponent)
 			{
@@ -24,6 +24,11 @@ void FRotatorEventData::Setup()
 
 		if (element.rotatingMeshComponent)
 		{
+			UE_LOG(LogTemp, Display, TEXT("Component Name: %s"), *element.rotatingMeshComponent->GetName());
+			element.originalRotation = element.rotatingMeshComponent->GetComponentRotation();
+		} else {
+			UE_LOG(LogTemp, Display, TEXT("No component selected. Choosing Root Component"));
+			element.rotatingMeshComponent = element.rotatingActor->GetRootComponent();
 			element.originalRotation = element.rotatingMeshComponent->GetComponentRotation();
 		}
 	}
