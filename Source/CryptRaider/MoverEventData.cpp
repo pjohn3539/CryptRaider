@@ -4,7 +4,7 @@
 
 #include "MoverEventData.h"
 
-void FMoverEventData::Setup(AActor* Owner)
+void FMoverEventData::Setup()
 {
 	for (FMoverArrayElement& element : listOfMovingObjects)
 	{

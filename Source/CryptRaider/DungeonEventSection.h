@@ -3,8 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DungeonEventComponent.h"
+#include "DungeonEventTriggerComponent.h"
 #include "DungeonEventSection.generated.h"
+
+
+// Declare the delegate signature
+DECLARE_DELEGATE_OneParam(FOnSectionCompleted, FName);
 
 /**
  * 
@@ -18,15 +22,22 @@ struct CRYPTRAIDER_API FDungeonEventSection
 
 	void SetSectionActive(bool active);
 
+	void SetSectionsUnlockedByCompletion(const TArray<FName>& activeList) { SectionsUnlockedByCompletion = activeList; }
+
 	void Completed();
+
+	// Delegate that external code (like the manager) can bind to
+    FOnSectionCompleted OnCompleted;
 
 	UPROPERTY(EditAnywhere)
     FName SectionName;
 
 	UPROPERTY(EditAnywhere)
-    bool SectionActive;
+    bool SectionActive = false;
 
 	UPROPERTY(EditAnywhere)
-    TArray<UDungeonEventComponent*> ListOfDungeonEvents;
+    TArray<FName> SectionsUnlockedByCompletion;
+	
+    TArray<UDungeonEventTriggerComponent*> ListOfDungeonEvents;
 
 };

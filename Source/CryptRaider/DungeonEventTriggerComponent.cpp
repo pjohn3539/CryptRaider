@@ -22,7 +22,7 @@ void UDungeonEventTriggerComponent::BeginPlay()
 
     for (FDungeonEvent& event : dungeonEvents)
 	{
-		event.Setup(GetOwner());
+		event.Setup();
 	}
 }
 
@@ -51,9 +51,11 @@ void UDungeonEventTriggerComponent::TickComponent(float DeltaTime, ELevelTick Ti
             event.SetIsActive(true);
         }
     } else {
-        for (FDungeonEvent& event: dungeonEvents) {
-            event.SetIsActive(false);
-        }
+        if (!onlyReactOnRelease) {
+            for (FDungeonEvent& event: dungeonEvents) {
+                event.SetIsActive(false);
+            }
+        }   
     }
 
     for (FDungeonEvent& event : dungeonEvents)
@@ -76,4 +78,11 @@ AActor* UDungeonEventTriggerComponent::CheckOverlappingActorsForTag() const {
     }
 
     return nullptr;
+}
+
+void UDungeonEventTriggerComponent::SetTriggerEnabled(bool active)
+{
+    SetGenerateOverlapEvents(active);
+    //SetComponentTickEnabled(active);
+    //SetActive(active);
 }

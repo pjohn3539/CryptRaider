@@ -3,11 +3,11 @@
 
 #include "DungeonEvent.h"
 
-void FDungeonEvent::Setup(AActor* Owner)
+void FDungeonEvent::Setup()
 {
 	if (DungeonEventType == EDungeonEventType::Mover)
 	{
-		moverData.Setup(Owner);
+		moverData.Setup();
 	}
 	else if (DungeonEventType == EDungeonEventType::Rotator)
 	{

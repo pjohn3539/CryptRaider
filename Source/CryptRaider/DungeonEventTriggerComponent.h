@@ -28,9 +28,13 @@ protected:
 
 public:
 
+	FName GetAssociatedSectionName() const { return AssociatedSectionName; }
+	
 	bool GetShouldReset() const { return shouldReset; }
 
 	bool GetShouldNotTakeObject() const { return shouldNotTakeObject; }
+
+	void SetTriggerEnabled(bool bEnabled);
 
 private:
 

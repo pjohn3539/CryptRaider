@@ -18,8 +18,6 @@ struct CRYPTRAIDER_API  FDungeonEvent
 
 public:
 
-	bool GetIsMainEvent() const { return IsMainEvent; } 
-
 	bool GetIsActive() const { return IsActive; } 
 
 	void SetIsActive(bool active) { IsActive = active; } 
@@ -32,16 +30,13 @@ public:
 
 	const FRotatorEventData& GetRotatorData() const { return RotatorData; }
 
-	void Setup(AActor* Owner);
+	void Setup();
 
 	void Tick(float DeltaTime);
 private:
 
 	UPROPERTY(EditAnywhere)
-	bool IsMainEvent = true;
-
-	UPROPERTY(EditAnywhere)
-	bool IsActive = true;
+	bool IsActive = false;
 
 	float durationTime = 4;
 
@@ -51,14 +46,14 @@ private:
 	UPROPERTY(
     EditAnywhere,
     Category="Mover",
-    meta=(EditCondition="IsMainEvent && DungeonEventType == EDungeonEventType::Mover", EditConditionHides)
+    meta=(EditCondition="DungeonEventType == EDungeonEventType::Mover", EditConditionHides)
 	)
 	FMoverEventData moverData;
 
 	UPROPERTY(
 		EditAnywhere,
 		Category="Rotator",
-		meta=(EditCondition="IsMainEvent && DungeonEventType == EDungeonEventType::Rotator", EditConditionHides)
+		meta=(EditCondition="DungeonEventType == EDungeonEventType::Rotator", EditConditionHides)
 	)
 	FRotatorEventData RotatorData;
 	

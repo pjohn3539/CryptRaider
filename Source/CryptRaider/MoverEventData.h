@@ -14,7 +14,7 @@ struct FMoverEventData
 {
 	GENERATED_BODY()
 
-	void Setup(AActor* Owner);
+	void Setup();
 
 	void Tick(float DeltaTime, float Duration, bool IsActive);
 

@@ -7,22 +7,32 @@ FDungeonEventSection::FDungeonEventSection()
 {
 }
 
+void FDungeonEventSection::SetSectionActive(bool active) {
+    SectionActive = active;
+
+    for (UDungeonEventTriggerComponent* event : ListOfDungeonEvents) {
+        if (!event) continue;
+        
+        event->SetTriggerEnabled(active);
+    }
+}
+
 void FDungeonEventSection::Completed()
 {
-    bool completedAllSections = true;
+    // bool completedAllSections = true;
 
-    for (UDungeonEventComponent* event : ListOfDungeonEvents) {
-        if (!event->GetCompletedStatus()) {
+    // for (UDungeonEventTriggerComponent* event : ListOfDungeonEvents) {
+    //     // if (!event->GetCompletedStatus()) {
 
-        }
+    //     // }
+    // }
+
+    // Notify whoever is listening (like the manager)
+    if (OnCompleted.IsBound())
+    {
+        OnCompleted.Execute(SectionName);
     }
 
     ///Activate other Sections
 }
 
-
-void FDungeonEventSection::SetSectionActive(bool active)
-{
-    SectionActive = active;
-
-}

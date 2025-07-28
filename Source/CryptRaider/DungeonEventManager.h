@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "DungeonEventSection.h"
+#include "DungeonEventSectionInformationArrayElement.h"
 #include "DungeonEventManager.generated.h"
 
 /**
@@ -19,19 +20,24 @@ public:
 	// Sets default values for this actor's properties
 	ADungeonEventManager();
 
+	void UnlockSection(FName sectionName);
+
+	UFUNCTION()
+	void OnSectionCompleted(FName CompletedSectionName);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-
-	UPROPERTY(EditAnywhere)
-	TArray<FName> SectionsActiveInTheBeginning;
 	
-	void SetupMap();
+	void SetupSectionMap();
 	
-	void SetupActiveEventSections();
+	void InitiateEventSections();
 
 	UPROPERTY(EditAnywhere)
 	TMap<FName, FDungeonEventSection> DungeonEventMap;
+
+	UPROPERTY(EditAnywhere)
+	TMap<FName, FDungeonEventSectionInformationArrayElement> SectionInformationMap;
 };

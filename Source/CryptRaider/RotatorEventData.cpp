@@ -24,10 +24,8 @@ void FRotatorEventData::Setup()
 
 		if (element.rotatingMeshComponent)
 		{
-			UE_LOG(LogTemp, Display, TEXT("Component Name: %s"), *element.rotatingMeshComponent->GetName());
 			element.originalRotation = element.rotatingMeshComponent->GetComponentRotation();
 		} else {
-			UE_LOG(LogTemp, Display, TEXT("No component selected. Choosing Root Component"));
 			element.rotatingMeshComponent = element.rotatingActor->GetRootComponent();
 			element.originalRotation = element.rotatingMeshComponent->GetComponentRotation();
 		}
