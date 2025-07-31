@@ -20,8 +20,6 @@ public:
 	// Sets default values for this actor's properties
 	ADungeonEventManager();
 
-	void UnlockSection(FName sectionName);
-
 	// UFUNCTION()
 	// void OnSectionCompleted(FName CompletedSectionName);
 

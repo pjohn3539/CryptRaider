@@ -73,15 +73,23 @@ void ADungeonEventManager::InitiateEventSections() {
 
 void ADungeonEventManager::OnEventCompletion(FName sectionName)
 {
-    
+
     // Unlock additional sections or trigger other logic
-    if (FDungeonEventSection* Section = DungeonEventMap.Find(sectionName))
+    if (FDungeonEventSection* section = DungeonEventMap.Find(sectionName))
     {
-        UE_LOG(LogTemp, Log, TEXT("Section '%s' completed."), *sectionName.ToString());
-        for (const FName& unlockName : Section->SectionsUnlockedByCompletion)
-        {
-            UE_LOG(LogTemp, Display, TEXT("Unlocking Section: %s"), *unlockName.ToString());
-            //UnlockSection(UnlockName);
+        if (section->Completed()) {
+            UE_LOG(LogTemp, Log, TEXT("Section '%s' completed."), *sectionName.ToString());
+
+            for (const FName& unlockName : section->SectionsUnlockedByCompletion) {
+                UE_LOG(LogTemp, Display, TEXT("Unlocking Section: %s"), *unlockName.ToString());
+            
+                if (FDungeonEventSection* unlockedSection = DungeonEventMap.Find(unlockName)) {
+                    unlockedSection->SetSectionActive(true);
+                } else {
+                    UE_LOG(LogTemp, Error, TEXT("Section %s does not exist"), *unlockName.ToString());
+                }
+            
+            }
         }
     } else {
         UE_LOG(LogTemp, Error, TEXT("Section %s does not exist"), *sectionName.ToString());

@@ -17,22 +17,17 @@ void FDungeonEventSection::SetSectionActive(bool active) {
     }
 }
 
-void FDungeonEventSection::Completed()
+bool FDungeonEventSection::Completed()
 {
-    // bool completedAllSections = true;
+    bool completedAllEvents = true;
 
-    // for (UDungeonEventTriggerComponent* event : ListOfDungeonEvents) {
-    //     // if (!event->GetCompletedStatus()) {
+    for (UDungeonEventTriggerComponent* event : ListOfDungeonEvents) {
+        if (!event->GetDungeonEvent().GetHasCompleted()) {
+            completedAllEvents = false;
+            break;
+        }
+    }
 
-    //     // }
-    // }
-
-    // Notify whoever is listening (like the manager)
-    // if (OnCompleted.IsBound())
-    // {
-    //     OnCompleted.Execute(SectionName);
-    // }
-
-    ///Activate other Sections
+    return completedAllEvents;
 }
 

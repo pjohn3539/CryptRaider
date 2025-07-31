@@ -23,7 +23,7 @@ struct CRYPTRAIDER_API FDungeonEventSection
 
 	void SetSectionsUnlockedByCompletion(const TArray<FName>& activeList) { SectionsUnlockedByCompletion = activeList; }
 
-	void Completed();
+	bool Completed();
 
 	UPROPERTY(EditAnywhere)
     FName SectionName;
