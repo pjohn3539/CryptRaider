@@ -26,4 +26,7 @@ struct FMoverArrayElement
 
 	FVector originalLocation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool hasCompleted = false;
+
 };

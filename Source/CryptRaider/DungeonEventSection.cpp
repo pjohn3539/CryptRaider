@@ -28,10 +28,10 @@ void FDungeonEventSection::Completed()
     // }
 
     // Notify whoever is listening (like the manager)
-    if (OnCompleted.IsBound())
-    {
-        OnCompleted.Execute(SectionName);
-    }
+    // if (OnCompleted.IsBound())
+    // {
+    //     OnCompleted.Execute(SectionName);
+    // }
 
     ///Activate other Sections
 }

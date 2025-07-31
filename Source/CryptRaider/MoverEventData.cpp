@@ -35,8 +35,12 @@ void FMoverEventData::Setup()
 }
 
 
-void FMoverEventData::Tick(float DeltaTime, float Duration, bool IsActive)
+void FMoverEventData::Tick(float DeltaTime, float Duration, bool IsActive, bool& HasCompleted)
 {
+	const float ArrivalTolerance = 0.05f;
+	
+	bool allCompleted = true;
+
 	for (FMoverArrayElement& element : listOfMovingObjects)
 	{
 		if (!element.movingMeshComponent) continue;
@@ -53,5 +57,25 @@ void FMoverEventData::Tick(float DeltaTime, float Duration, bool IsActive)
 
 		FVector newLocation = FMath::VInterpConstantTo(currentLocation, targetLocation, DeltaTime, speed);
 		element.movingMeshComponent->SetWorldLocation(newLocation);
+
+		 // Check if this element has arrived
+        if (IsActive && !element.hasCompleted && currentLocation.Equals(targetLocation, ArrivalTolerance))
+        {
+            element.hasCompleted = true;
+			
+        }
+        else if (!IsActive)
+        {
+            // Reset if going back
+            element.hasCompleted = false;
+        }
+
+		if (!element.hasCompleted) {
+			allCompleted = false;
+		}
+	}
+
+	if (allCompleted) {
+		HasCompleted = true;
 	}
 }

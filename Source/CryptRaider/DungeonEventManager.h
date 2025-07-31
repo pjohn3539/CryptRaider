@@ -22,8 +22,11 @@ public:
 
 	void UnlockSection(FName sectionName);
 
+	// UFUNCTION()
+	// void OnSectionCompleted(FName CompletedSectionName);
+
 	UFUNCTION()
-	void OnSectionCompleted(FName CompletedSectionName);
+	void OnEventCompletion(FName sectionName);
 
 protected:
 	// Called when the game starts or when spawned

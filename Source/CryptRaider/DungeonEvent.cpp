@@ -15,14 +15,19 @@ void FDungeonEvent::Setup()
 	}
 }
 
-void FDungeonEvent::Tick(float DeltaTime)
+void FDungeonEvent::Tick(float DeltaTime, float duration, FName sectionName)
 {
 	if (DungeonEventType == EDungeonEventType::Mover)
 	{
-		moverData.Tick(DeltaTime, durationTime, IsActive);
+		moverData.Tick(DeltaTime, duration, IsActive, hasCompleted);
 	}
 	else if (DungeonEventType == EDungeonEventType::Rotator)
 	{
-		RotatorData.Tick(DeltaTime, durationTime, IsActive);
+		RotatorData.Tick(DeltaTime, duration, IsActive, hasCompleted);
+	}
+
+	if (hasCompleted && !hasCalledTheManager) {
+		hasCalledTheManager = true;
+		OnCompleted.Execute(sectionName);
 	}
 }

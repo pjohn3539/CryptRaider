@@ -47,12 +47,8 @@ void ADungeonEventManager::SetupSectionMap() {
             if (section.SectionName.IsNone()) {
                 section.SectionName = sectionName;
             }
+            event->GetDungeonEvent().OnCompleted.BindUObject(this, &ADungeonEventManager::OnEventCompletion);
             section.ListOfDungeonEvents.Add(event);
-
-            if (!section.OnCompleted.IsBound())
-            {
-                section.OnCompleted.BindUObject(this, &ADungeonEventManager::OnSectionCompleted);
-            }
         }
     }
 }
@@ -75,16 +71,19 @@ void ADungeonEventManager::InitiateEventSections() {
     
 }
 
-void ADungeonEventManager::OnSectionCompleted(FName CompletedSectionName)
+void ADungeonEventManager::OnEventCompletion(FName sectionName)
 {
-    UE_LOG(LogTemp, Log, TEXT("Section '%s' completed."), *CompletedSectionName.ToString());
-
+    
     // Unlock additional sections or trigger other logic
-    if (FDungeonEventSection* Section = DungeonEventMap.Find(CompletedSectionName))
+    if (FDungeonEventSection* Section = DungeonEventMap.Find(sectionName))
     {
-        // for (const FName& UnlockName : Section->SectionsUnlockByCompletion)
-        // {
-        //     //UnlockSection(UnlockName);
-        // }
+        UE_LOG(LogTemp, Log, TEXT("Section '%s' completed."), *sectionName.ToString());
+        for (const FName& unlockName : Section->SectionsUnlockedByCompletion)
+        {
+            UE_LOG(LogTemp, Display, TEXT("Unlocking Section: %s"), *unlockName.ToString());
+            //UnlockSection(UnlockName);
+        }
+    } else {
+        UE_LOG(LogTemp, Error, TEXT("Section %s does not exist"), *sectionName.ToString());
     }
 }

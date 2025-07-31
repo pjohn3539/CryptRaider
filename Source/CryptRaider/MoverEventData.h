@@ -16,7 +16,7 @@ struct FMoverEventData
 
 	void Setup();
 
-	void Tick(float DeltaTime, float Duration, bool IsActive);
+	void Tick(float DeltaTime, float Duration, bool IsActive, bool& HasCompleted);
 
 	UPROPERTY(EditAnywhere)
 	TArray<FMoverArrayElement> listOfMovingObjects; 

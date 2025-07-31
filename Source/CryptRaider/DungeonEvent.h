@@ -8,6 +8,10 @@
 #include "RotatorEventData.h"
 #include "DungeonEvent.generated.h"
 
+
+// Declare the delegate signature
+DECLARE_DELEGATE_OneParam(FOnEventCompletion, FName);
+
 /**
  * 
  */
@@ -20,9 +24,9 @@ public:
 
 	bool GetIsActive() const { return IsActive; } 
 
-	void SetIsActive(bool active) { IsActive = active; } 
+	bool GetHasCompleted() const { return hasCompleted; }
 
-	void SetDurationTime(float newDurationTime)  { durationTime = newDurationTime; } 
+	void SetIsActive(bool active) { IsActive = active; } 
 
 	EDungeonEventType GetDungeonEventType() const { return DungeonEventType; }
 
@@ -32,13 +36,20 @@ public:
 
 	void Setup();
 
-	void Tick(float DeltaTime);
+	void Tick(float DeltaTime, float duration, FName sectionName);
+
+	// Delegate that external code (like the manager) can bind to
+    FOnEventCompletion OnCompleted;
+
 private:
 
 	UPROPERTY(EditAnywhere)
 	bool IsActive = false;
 
-	float durationTime = 4;
+	bool hasCalledTheManager = false;
+
+	UPROPERTY(EditAnywhere)
+	bool hasCompleted = false;
 
 	UPROPERTY(EditAnywhere)
   	EDungeonEventType DungeonEventType = EDungeonEventType::Mover;

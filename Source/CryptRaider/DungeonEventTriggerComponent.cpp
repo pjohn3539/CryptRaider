@@ -20,10 +20,7 @@ void UDungeonEventTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-    for (FDungeonEvent& event : dungeonEvents)
-	{
-		event.Setup();
-	}
+    dungeonEvent.Setup();
 }
 
 
@@ -47,21 +44,14 @@ void UDungeonEventTriggerComponent::TickComponent(float DeltaTime, ELevelTick Ti
 		    actorFound->Tags.Add(CryptRaiderGameplayTags::DEACTIVATED_TAG);
         }
 
-        for (FDungeonEvent& event: dungeonEvents) {
-            event.SetIsActive(true);
-        }
+        dungeonEvent.SetIsActive(true);
     } else {
         if (!onlyReactOnRelease) {
-            for (FDungeonEvent& event: dungeonEvents) {
-                event.SetIsActive(false);
-            }
+            dungeonEvent.SetIsActive(false);
         }   
     }
 
-    for (FDungeonEvent& event : dungeonEvents)
-    {
-        event.Tick(DeltaTime);
-    }
+    dungeonEvent.Tick(DeltaTime, durationTimeForEvents, AssociatedSectionName);
 }
 
 AActor* UDungeonEventTriggerComponent::CheckOverlappingActorsForTag() const {
@@ -83,6 +73,4 @@ AActor* UDungeonEventTriggerComponent::CheckOverlappingActorsForTag() const {
 void UDungeonEventTriggerComponent::SetTriggerEnabled(bool active)
 {
     SetGenerateOverlapEvents(active);
-    //SetComponentTickEnabled(active);
-    //SetActive(active);
 }

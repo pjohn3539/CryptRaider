@@ -26,4 +26,7 @@ struct FRotatorArrayElement
 
 	FRotator originalRotation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool hasCompleted = false;
+
 };

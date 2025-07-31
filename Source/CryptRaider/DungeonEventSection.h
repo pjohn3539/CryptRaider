@@ -7,8 +7,7 @@
 #include "DungeonEventSection.generated.h"
 
 
-// Declare the delegate signature
-DECLARE_DELEGATE_OneParam(FOnSectionCompleted, FName);
+
 
 /**
  * 
@@ -25,9 +24,6 @@ struct CRYPTRAIDER_API FDungeonEventSection
 	void SetSectionsUnlockedByCompletion(const TArray<FName>& activeList) { SectionsUnlockedByCompletion = activeList; }
 
 	void Completed();
-
-	// Delegate that external code (like the manager) can bind to
-    FOnSectionCompleted OnCompleted;
 
 	UPROPERTY(EditAnywhere)
     FName SectionName;

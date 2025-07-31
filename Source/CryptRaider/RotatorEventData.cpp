@@ -32,8 +32,12 @@ void FRotatorEventData::Setup()
 	}
 }
 
-void FRotatorEventData::Tick(float DeltaTime, float Duration, bool IsActive)
+void FRotatorEventData::Tick(float DeltaTime, float Duration, bool IsActive, bool& HasCompleted)
 {
+	const float ArrivalTolerance = 0.1f;
+
+	bool allCompleted = true;
+
 	for (FRotatorArrayElement& element : listOfRotatingObjects)
 	{
 		if (!element.rotatingMeshComponent) continue;
@@ -54,5 +58,26 @@ void FRotatorEventData::Tick(float DeltaTime, float Duration, bool IsActive)
 
 		FRotator newRotation = FMath::RInterpConstantTo(currentRotation, targetRotation, DeltaTime, speed);
 		element.rotatingMeshComponent->SetWorldRotation(newRotation);
+
+		 // Check if this element has arrived
+        if (IsActive && !element.hasCompleted && currentRotation.Equals(targetRotation, ArrivalTolerance))
+        {
+            element.hasCompleted = true;
+        }
+        else if (!IsActive)
+        {
+            // Reset if going back
+            element.hasCompleted = false;
+        }
+
+		if (!element.hasCompleted) {
+			allCompleted = false;
+		}
+	}
+
+
+
+	if (allCompleted) {
+		HasCompleted = true;
 	}
 }

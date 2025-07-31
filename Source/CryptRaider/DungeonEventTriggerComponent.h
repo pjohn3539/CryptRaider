@@ -34,6 +34,8 @@ public:
 
 	bool GetShouldNotTakeObject() const { return shouldNotTakeObject; }
 
+	FDungeonEvent& GetDungeonEvent() { return dungeonEvent; }
+
 	void SetTriggerEnabled(bool bEnabled);
 
 private:
@@ -60,7 +62,7 @@ private:
 	bool shouldReset = false;
 
 	UPROPERTY(EditAnywhere)
-	TArray<FDungeonEvent> dungeonEvents;
+	FDungeonEvent dungeonEvent;
 
 	AActor* CheckOverlappingActorsForTag() const;
 
