@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
 #include "DungeonEvent.h"
+#include "DungeonEventTriggerType.h"
+#include "DungeonEventTriggerMassBasedData.h"
+#include "DungeonEventTriggerPlacementBasedData.h"
 #include "DungeonEventTriggerComponent.generated.h"
 
 /**
@@ -30,18 +33,15 @@ public:
 
 	FName GetAssociatedSectionName() const { return AssociatedSectionName; }
 	
-	bool GetShouldReset() const { return shouldReset; }
+	bool GetShouldReset() const { return placementBasedTriggerData.shouldReset; }
 
-	bool GetShouldNotTakeObject() const { return shouldNotTakeObject; }
+	bool GetShouldNotTakeObject() const { return placementBasedTriggerData.shouldNotTakeObject; }
 
 	FDungeonEvent& GetDungeonEvent() { return dungeonEvent; }
 
-	void SetTriggerEnabled(bool bEnabled);
+	void SetTriggerEnabled(bool active);
 
 private:
-
-	UPROPERTY(EditAnywhere)
-	FName tagNameForTrigger = "Key";
 
 	UPROPERTY(EditAnywhere)
 	FName AssociatedSectionName;
@@ -50,16 +50,39 @@ private:
 	float durationTimeForEvents = 4;
 
 	UPROPERTY(EditAnywhere)
-	bool onlyReactOnRelease = true;
+  	EDungeonEventTriggerType DungeonEventTriggerType = EDungeonEventTriggerType::PlacementBased;
 
-	UPROPERTY(EditAnywhere)
-	bool turnOffCollisonWhenActivated = false;
+	UPROPERTY(
+    EditAnywhere,
+    meta=(EditCondition="DungeonEventTriggerType == EDungeonEventTriggerType::PlacementBased", EditConditionHides)
+	)
+	FDungeonEventTriggerPlacementBasedData placementBasedTriggerData;
+
+	UPROPERTY(
+    EditAnywhere,
+    meta=(EditCondition="DungeonEventTriggerType == EDungeonEventTriggerType::MassBased", EditConditionHides)
+	)
+	FDungeonEventTriggerMassBasedData massBasedTriggerData;
+
+	// UPROPERTY(
+    // EditAnywhere,
+    // Category="Mass Based",
+    // meta=(EditCondition="DungeonEventTriggerType == EDungeonEventTriggerType::MassBased", EditConditionHides)
+	// )
+	// FMoverEventData moverData;
+
+
+	// UPROPERTY(EditAnywhere)
+	// bool onlyReactOnRelease = true;
+
+	// UPROPERTY(EditAnywhere)
+	// bool turnOffCollisonWhenActivated = false;
 	
-	UPROPERTY(EditAnywhere)
-	bool shouldNotTakeObject = false;
+	// UPROPERTY(EditAnywhere)
+	// bool shouldNotTakeObject = false;
 
-	UPROPERTY(EditAnywhere, meta=(EditCondition="shouldNotTakeObject"))
-	bool shouldReset = false;
+	// UPROPERTY(EditAnywhere, meta=(EditCondition="shouldNotTakeObject"))
+	// bool shouldReset = false;
 
 	UPROPERTY(EditAnywhere)
 	FDungeonEvent dungeonEvent;

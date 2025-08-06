@@ -28,28 +28,63 @@ void UDungeonEventTriggerComponent::TickComponent(float DeltaTime, ELevelTick Ti
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-      AActor* actorFound = CheckOverlappingActorsForTag();
+    if (DungeonEventTriggerType == EDungeonEventTriggerType::PlacementBased) {
+        
+        AActor* actorFound = CheckOverlappingActorsForTag();
 
-    if (actorFound) {
-        UPrimitiveComponent*  component = Cast<UPrimitiveComponent>(actorFound->GetRootComponent());
+        if (actorFound) {
+            UPrimitiveComponent*  component = Cast<UPrimitiveComponent>(actorFound->GetRootComponent());
 
-        if (!shouldNotTakeObject) {
-            if (component) {
-                component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform, NAME_None);
+            if (!placementBasedTriggerData.shouldNotTakeObject) {
+                if (component) {
+                    component->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform, NAME_None);
+                }
+                actorFound->DisableComponentsSimulatePhysics();
             }
-            actorFound->DisableComponentsSimulatePhysics();
+
+            if (!placementBasedTriggerData.shouldReset) {
+                actorFound->Tags.Add(CryptRaiderGameplayTags::DEACTIVATED_TAG);
+            }
+
+            dungeonEvent.SetIsActive(true);
+        } else {
+            if (!placementBasedTriggerData.onlyReactOnRelease) {
+                dungeonEvent.SetIsActive(false);
+            }   
+        }
+    } else if (DungeonEventTriggerType == EDungeonEventTriggerType::MassBased) {
+		float totalMass = 0.0f;
+
+		TArray<AActor*> overlappingActors;
+		GetOverlappingActors(overlappingActors);
+
+        TArray<AActor*> overlappingNonGrabbedActors;
+
+        if (overlappingActors.Num() > 0){
+            for (AActor* actor : overlappingActors) {
+                if (!actor->ActorHasTag(CryptRaiderGameplayTags::GRABBED_TAG)) {
+                        overlappingNonGrabbedActors.Add(actor);
+                }
+            }
         }
 
-        if (!shouldReset) {
-		    actorFound->Tags.Add(CryptRaiderGameplayTags::DEACTIVATED_TAG);
-        }
+		for (AActor* actor : overlappingNonGrabbedActors) {
+			TArray<UPrimitiveComponent*> primitiveComponents;
+			actor->GetComponents<UPrimitiveComponent>(primitiveComponents);
 
-        dungeonEvent.SetIsActive(true);
-    } else {
-        if (!onlyReactOnRelease) {
-            dungeonEvent.SetIsActive(false);
-        }   
-    }
+			for (UPrimitiveComponent* component : primitiveComponents) {
+				if (component->IsSimulatingPhysics()) {
+					totalMass += component->GetMass();
+				}
+			}
+		}
+
+		if (totalMass >= massBasedTriggerData.massNeeded) {
+			dungeonEvent.SetIsActive(true);
+		} else {
+			dungeonEvent.SetIsActive(false);
+		}
+	}
 
     dungeonEvent.Tick(DeltaTime, durationTimeForEvents, AssociatedSectionName);
 }
@@ -60,8 +95,8 @@ AActor* UDungeonEventTriggerComponent::CheckOverlappingActorsForTag() const {
 
     if (overlappingActors.Num() > 0){
         for (AActor* actor : overlappingActors) {
-           if ((actor->ActorHasTag(tagNameForTrigger) && !actor->ActorHasTag(CryptRaiderGameplayTags::GRABBED_TAG)) 
-           || (actor->ActorHasTag(tagNameForTrigger) && !onlyReactOnRelease)) {
+           if ((actor->ActorHasTag(placementBasedTriggerData.tagNameForTrigger) && !actor->ActorHasTag(CryptRaiderGameplayTags::GRABBED_TAG)) 
+           || (actor->ActorHasTag(placementBasedTriggerData.tagNameForTrigger) && !placementBasedTriggerData.onlyReactOnRelease && DungeonEventTriggerType == EDungeonEventTriggerType::PlacementBased)) {
                 return actor;
            }
         }
