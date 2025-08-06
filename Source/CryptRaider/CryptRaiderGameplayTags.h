@@ -11,4 +11,5 @@ namespace CryptRaiderGameplayTags
 {
     static const FName DEACTIVATED_TAG("Deactivated");
 	static const FName GRABBED_TAG("Grabbed");
+    static const FName ACTION_TRIGGER_TAG("ActionTrigger");
 }

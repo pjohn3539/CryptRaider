@@ -20,6 +20,10 @@ void UDungeonEventTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+    if (DungeonEventTriggerType == EDungeonEventTriggerType::ActionBased && !ComponentTags.Contains(CryptRaiderGameplayTags::ACTION_TRIGGER_TAG)) {
+        ComponentTags.Add(CryptRaiderGameplayTags::ACTION_TRIGGER_TAG);
+    }
+    
     dungeonEvent.Setup();
 }
 

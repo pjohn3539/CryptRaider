@@ -12,6 +12,6 @@ UENUM(BlueprintType)
 enum class EDungeonEventTriggerType : uint8
 {
     PlacementBased     UMETA(DisplayName = "Placement Based"),
-    MassBased   UMETA(DisplayName = "Mass Based")
-    
+    MassBased   UMETA(DisplayName = "Mass Based"),
+    ActionBased   UMETA(DisplayName = "Action Based")
 };

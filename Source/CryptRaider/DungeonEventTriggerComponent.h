@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "DungeonEvent.h"
 #include "DungeonEventTriggerType.h"
+#include "DungeonEventTriggerActionBasedData.h"
 #include "DungeonEventTriggerMassBasedData.h"
 #include "DungeonEventTriggerPlacementBasedData.h"
 #include "DungeonEventTriggerComponent.generated.h"
@@ -41,6 +42,9 @@ public:
 
 	void SetTriggerEnabled(bool active);
 
+	UFUNCTION(BlueprintCallable)
+	EDungeonEventTriggerType GetDungeonEventTriggerType() { return DungeonEventTriggerType; }
+
 private:
 
 	UPROPERTY(EditAnywhere)
@@ -64,25 +68,11 @@ private:
 	)
 	FDungeonEventTriggerMassBasedData massBasedTriggerData;
 
-	// UPROPERTY(
-    // EditAnywhere,
-    // Category="Mass Based",
-    // meta=(EditCondition="DungeonEventTriggerType == EDungeonEventTriggerType::MassBased", EditConditionHides)
-	// )
-	// FMoverEventData moverData;
-
-
-	// UPROPERTY(EditAnywhere)
-	// bool onlyReactOnRelease = true;
-
-	// UPROPERTY(EditAnywhere)
-	// bool turnOffCollisonWhenActivated = false;
-	
-	// UPROPERTY(EditAnywhere)
-	// bool shouldNotTakeObject = false;
-
-	// UPROPERTY(EditAnywhere, meta=(EditCondition="shouldNotTakeObject"))
-	// bool shouldReset = false;
+	UPROPERTY(
+    EditAnywhere,
+    meta=(EditCondition="DungeonEventTriggerType == EDungeonEventTriggerType::ActionBased", EditConditionHides)
+	)
+	FDungeonEventTriggerActionBasedData actionBasedTriggerData;
 
 	UPROPERTY(EditAnywhere)
 	FDungeonEvent dungeonEvent;
