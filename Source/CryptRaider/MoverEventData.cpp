@@ -61,8 +61,7 @@ void FMoverEventData::Tick(float DeltaTime, float Duration, bool IsActive, bool&
 		 // Check if this element has arrived
         if (IsActive && !element.hasCompleted && currentLocation.Equals(targetLocation, ArrivalTolerance))
         {
-            element.hasCompleted = true;
-			
+            element.hasCompleted = true;	
         }
         else if (!IsActive)
         {

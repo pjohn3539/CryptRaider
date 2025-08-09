@@ -45,6 +45,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	EDungeonEventTriggerType GetDungeonEventTriggerType() { return DungeonEventTriggerType; }
 
+	UFUNCTION(BlueprintCallable)
+	void SetDungeonEventIsActive(bool active) { dungeonEvent.SetIsActive(active); }
+
 private:
 
 	UPROPERTY(EditAnywhere)

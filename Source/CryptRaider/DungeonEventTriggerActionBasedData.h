@@ -14,6 +14,6 @@ struct FDungeonEventTriggerActionBasedData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	float holdTimeToInteract = 2;
+	bool reset = false;
 	
 };
