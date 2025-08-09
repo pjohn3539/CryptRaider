@@ -46,6 +46,12 @@ public:
 	EDungeonEventTriggerType GetDungeonEventTriggerType() { return DungeonEventTriggerType; }
 
 	UFUNCTION(BlueprintCallable)
+	bool GetDungeonEventIsActive() const { return dungeonEvent.GetIsActive(); }
+
+	UFUNCTION(BlueprintCallable)
+	bool GetDungeonEventHasCompleted() const { return dungeonEvent.GetHasCompleted(); }
+
+	UFUNCTION(BlueprintCallable)
 	void SetDungeonEventIsActive(bool active) { dungeonEvent.SetIsActive(active); }
 
 private:
