@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "Math/UnrealMathUtility.h"
+#include "Components/MeshComponent.h"
 #include "CryptRaiderGameplayTags.h"
 
 // Sets default values for this component's properties
@@ -31,6 +32,14 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	UPhysicsHandleComponent* physicsHandle = GetPhysicsHandle();
 
 	CurrentHoldDistance = FMath::FInterpTo(CurrentHoldDistance, holdDistance, DeltaTime, holdDistanceInterpSpeed);
+
+	FHitResult HitResult;
+	if (GetGrabbableInReach(HitResult)) {
+		ApplyOverlay(HitResult.GetComponent());
+	}
+	else {
+		ClearOverlay();
+	}
 
 	//A perk in C++ is that it will check the conditional left to right for a conditional and 
 	//if the condition on the left is false it won't check the right. This allows you to do the below.
@@ -187,8 +196,7 @@ APlayerController* UGrabber::GetPlayerController() const {
 		return nullptr;
 }
 
-void UGrabber::AdjustHoldDistance(float AxisValue)
-{
+void UGrabber::AdjustHoldDistance(float AxisValue) {
 	if (FMath::IsNearlyZero(AxisValue, 0.01f)) {
 		return;
 	}
@@ -199,3 +207,30 @@ void UGrabber::AdjustHoldDistance(float AxisValue)
 	UE_LOG(LogTemp, Display, TEXT("Hold Distance Adjusted: %f"), holdDistance);
 }
 
+
+void UGrabber::ApplyOverlay(UPrimitiveComponent* Component) {
+	if (!Component || !GrabOverlayMaterial) {
+		return;
+	}
+
+	UMeshComponent* MeshComp = Cast<UMeshComponent>(Component);
+	if (!MeshComp) {
+		return;
+	}
+
+	if (LastHighlightedMesh == MeshComp) {
+		return;
+	}
+
+	ClearOverlay();
+
+	MeshComp->SetOverlayMaterial(GrabOverlayMaterial);
+	LastHighlightedMesh = MeshComp;
+}
+
+void UGrabber::ClearOverlay() {
+	if (LastHighlightedMesh) {
+		LastHighlightedMesh->SetOverlayMaterial(nullptr);
+		LastHighlightedMesh = nullptr;
+	}
+}

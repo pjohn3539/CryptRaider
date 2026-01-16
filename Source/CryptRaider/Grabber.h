@@ -53,10 +53,19 @@ private:
 
 	APlayerController* GetPlayerController() const;
 
+	void ApplyOverlay(UPrimitiveComponent* Component);
 	
+	void ClearOverlay();
+
 
 	UPROPERTY(EditAnywhere)
 	float maxGrabDistance = 400;
+
+	UPROPERTY(EditAnywhere)
+	UMaterialInterface* GrabOverlayMaterial;
+
+	UPROPERTY()
+	UMeshComponent* LastHighlightedMesh = nullptr;
 
 	UPROPERTY(EditAnywhere)
 	float grabRadius = 100;

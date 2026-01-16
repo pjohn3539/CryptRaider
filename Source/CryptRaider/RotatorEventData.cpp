@@ -62,6 +62,7 @@ void FRotatorEventData::Tick(float DeltaTime, float Duration, bool IsActive, boo
 		 // Check if this element has arrived
         if (IsActive && !element.hasCompleted && currentRotation.Equals(targetRotation, ArrivalTolerance))
         {
+			UE_LOG(LogTemp, Log, TEXT("Here Completed"));
             element.hasCompleted = true;
         }
         else if (!IsActive)

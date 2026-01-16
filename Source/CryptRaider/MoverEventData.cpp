@@ -58,9 +58,14 @@ void FMoverEventData::Tick(float DeltaTime, float Duration, bool IsActive, bool&
 		FVector newLocation = FMath::VInterpConstantTo(currentLocation, targetLocation, DeltaTime, speed);
 		element.movingMeshComponent->SetWorldLocation(newLocation);
 
-		 // Check if this element has arrived
+        FString BoolAsString = currentLocation.Equals(targetLocation, ArrivalTolerance) ? TEXT("true") : TEXT("false");
+
+		//UE_LOG(LogTemp, Log, TEXT("Move Data section completed: %s"), *BoolAsString);
+
+		// Check if this element has arrived
         if (IsActive && !element.hasCompleted && currentLocation.Equals(targetLocation, ArrivalTolerance))
         {
+			
             element.hasCompleted = true;	
         }
         else if (!IsActive)

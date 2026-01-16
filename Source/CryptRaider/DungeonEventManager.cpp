@@ -62,6 +62,7 @@ void ADungeonEventManager::InitiateEventSections() {
         FDungeonEventSectionInformationArrayElement* currentInformationSection = SectionInformationMap.Find(key);
         if (FDungeonEventSection* section = DungeonEventMap.Find(key))
         {
+            
             section->SetSectionActive(currentInformationSection->StartActive);
             section->SetSectionsUnlockedByCompletion(currentInformationSection->SectionsUnlockedByCompletion);
         } else {
@@ -74,9 +75,14 @@ void ADungeonEventManager::InitiateEventSections() {
 void ADungeonEventManager::OnEventCompletion(FName sectionName)
 {
 
+    UE_LOG(LogTemp, Log, TEXT("Section completed."), *sectionName.ToString());
     // Unlock additional sections or trigger other logic
     if (FDungeonEventSection* section = DungeonEventMap.Find(sectionName))
     {
+        UE_LOG(LogTemp, Log, TEXT("First if: %s"), *sectionName.ToString());
+        FString BoolAsString = section->Completed() ? TEXT("true") : TEXT("false");
+
+        UE_LOG(LogTemp, Warning, TEXT("Completed: %s"), *BoolAsString);
         if (section->Completed()) {
             UE_LOG(LogTemp, Log, TEXT("Section '%s' completed."), *sectionName.ToString());
 
