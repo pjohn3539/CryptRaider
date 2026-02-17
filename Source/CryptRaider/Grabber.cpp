@@ -34,10 +34,19 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	CurrentHoldDistance = FMath::FInterpTo(CurrentHoldDistance, holdDistance, DeltaTime, holdDistanceInterpSpeed);
 
 	FHitResult HitResult;
-	if (GetGrabbableInReach(HitResult)) {
-		ApplyOverlay(HitResult.GetComponent());
+	if (!physicsHandle || !physicsHandle->GetGrabbedComponent())
+	{
+		if (GetGrabbableInReach(HitResult)) {
+			UE_LOG(LogTemp, Display, TEXT("Apply Overlay"));
+			ApplyOverlay(HitResult.GetComponent());
+		}
+		else {
+			ClearOverlay();
+		}
 	}
-	else {
+	else
+	{
+		// Ensure overlay stays off while holding
 		ClearOverlay();
 	}
 
@@ -63,7 +72,7 @@ bool UGrabber::GetGrabbableInReach(FHitResult& outHitResult)  const {
 	FCollisionShape Sphere = FCollisionShape::MakeSphere(grabRadius);
 	bool HasHit = GetWorld()->SweepSingleByChannel(outHitResult, start, end, FQuat::Identity, ECC_GameTraceChannel2, Sphere);
 
-	UE_LOG(LogTemp, Display, TEXT("Has Hit: %s"), HasHit ? TEXT("True") : TEXT("False"));
+	//UE_LOG(LogTemp, Display, TEXT("Has Hit: %s"), HasHit ? TEXT("True") : TEXT("False"));
 	
 	return HasHit;
 }
@@ -87,6 +96,8 @@ void UGrabber::Grab() {
 			HitComponent->SetSimulatePhysics(true);
 			HitComponent->WakeAllRigidBodies();
 			
+			ClearOverlay();
+
 			HitActor->Tags.Add(CryptRaiderGameplayTags::GRABBED_TAG);
 			HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 			physicsHandle->GrabComponentAtLocationWithRotation(

@@ -54,6 +54,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetDungeonEventIsActive(bool active) { dungeonEvent.SetIsActive(active); }
 
+	UFUNCTION(BlueprintCallable)
+	void SetHighlightedMeshes(TArray<UMeshComponent*> meshes) { highlightedMeshes = meshes; }
+
+	UFUNCTION(BlueprintCallable)
+	void ApplyOverlay(UMaterialInterface* grabOverlayMaterial);
+	
+	UFUNCTION(BlueprintCallable)
+	void ClearOverlay();
+
 private:
 
 	UPROPERTY(EditAnywhere)
@@ -82,6 +91,12 @@ private:
     meta=(EditCondition="DungeonEventTriggerType == EDungeonEventTriggerType::ActionBased", EditConditionHides)
 	)
 	FDungeonEventTriggerActionBasedData actionBasedTriggerData;
+
+	UPROPERTY(EditAnywhere)
+	UMaterialInterface* GrabOverlayMaterial;
+
+	UPROPERTY(EditAnywhere)
+	TArray<UMeshComponent*> highlightedMeshes;
 
 	UPROPERTY(EditAnywhere)
 	FDungeonEvent dungeonEvent;

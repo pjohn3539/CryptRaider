@@ -2,6 +2,7 @@
 
 
 #include "DungeonEventTriggerComponent.h"
+#include "Components/MeshComponent.h"
 #include "CryptRaiderGameplayTags.h"
 
 // Sets default values for this component's properties
@@ -108,4 +109,28 @@ AActor* UDungeonEventTriggerComponent::CheckOverlappingActorsForTag() const {
 void UDungeonEventTriggerComponent::SetTriggerEnabled(bool active)
 {
     SetGenerateOverlapEvents(active);
+}
+
+void UDungeonEventTriggerComponent::ApplyOverlay(UMaterialInterface* grabOverlayMaterial) {
+	if (!grabOverlayMaterial) {
+		return;
+	}
+
+    for (UMeshComponent* mesh : highlightedMeshes)
+	{
+        if (!mesh) {
+            return;
+        }
+        
+        mesh->SetOverlayMaterial(grabOverlayMaterial);
+    }
+}
+
+void UDungeonEventTriggerComponent::ClearOverlay() {
+
+    for (UMeshComponent* mesh : highlightedMeshes)
+    {
+        mesh->SetOverlayMaterial(nullptr);
+        mesh = nullptr;
+    }
 }
