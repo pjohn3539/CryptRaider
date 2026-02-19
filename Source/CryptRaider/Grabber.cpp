@@ -36,7 +36,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	FHitResult HitResult;
 	if (!physicsHandle || !physicsHandle->GetGrabbedComponent())
 	{
-		if (GetGrabbableInReach(HitResult)) {
+		if (GetGrabbableInReach(HitResult) && !HitResult.GetActor()->ActorHasTag(CryptRaiderGameplayTags::DEACTIVATED_TAG)) {
 			UE_LOG(LogTemp, Display, TEXT("Apply Overlay"));
 			ApplyOverlay(HitResult.GetComponent());
 		}
