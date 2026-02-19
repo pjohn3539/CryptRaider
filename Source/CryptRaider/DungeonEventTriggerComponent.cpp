@@ -43,7 +43,7 @@ void UDungeonEventTriggerComponent::TickComponent(float DeltaTime, ELevelTick Ti
                 actorFound->DisableComponentsSimulatePhysics();
             }
 
-            if (!placementBasedTriggerData.shouldReset) {
+            if (!placementBasedTriggerData.shouldReset && !actorFound->ActorHasTag(CryptRaiderGameplayTags::DEACTIVATED_TAG)) {
                 actorFound->Tags.Add(CryptRaiderGameplayTags::DEACTIVATED_TAG);
             }
 
