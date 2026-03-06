@@ -92,6 +92,8 @@ private:
 	)
 	FDungeonEventTriggerActionBasedData actionBasedTriggerData;
 
+	TArray<FName> ListOfTagNamesForTrigger;
+	
 	UPROPERTY(EditAnywhere)
 	UMaterialInterface* GrabOverlayMaterial;
 

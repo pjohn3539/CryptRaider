@@ -55,10 +55,13 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	
 protected:
 	// APawn interface
 	virtual void NotifyControllerChanged() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Mass = 0;
 	// End of APawn interface
 
 public:
@@ -66,6 +69,9 @@ public:
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+
+	float GetMass() { return Mass; };
+
 
 };
 

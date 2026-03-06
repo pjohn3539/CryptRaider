@@ -15,5 +15,8 @@ struct FDungeonEventTriggerMassBasedData
 
 	UPROPERTY(EditAnywhere)
 	float massNeeded = 100;
+
+	UPROPERTY(EditAnywhere)
+	TArray<FName> ListOfTagNamesForTrigger;
 	
 };

@@ -4,6 +4,7 @@
 #include "DungeonEventTriggerComponent.h"
 #include "Components/MeshComponent.h"
 #include "CryptRaiderGameplayTags.h"
+#include "CryptRaiderCharacter.h"
 
 // Sets default values for this component's properties
 UDungeonEventTriggerComponent::UDungeonEventTriggerComponent()
@@ -20,6 +21,12 @@ UDungeonEventTriggerComponent::UDungeonEventTriggerComponent()
 void UDungeonEventTriggerComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+    // if (DungeonEventTriggerType == EDungeonEventTriggerType::PlacementBased ) {
+    //     ListOfTagNamesForTrigger = placementBasedTriggerData.;ListOfTagNamesForTrigger
+    // } else if (DungeonEventTriggerType == EDungeonEventTriggerType::MassBased) {
+    //     ListOfTagNamesForTrigger = 
+    // }
     
     dungeonEvent.Setup();
 }
@@ -61,6 +68,8 @@ void UDungeonEventTriggerComponent::TickComponent(float DeltaTime, ELevelTick Ti
 
         TArray<AActor*> overlappingNonGrabbedActors;
 
+        //UE_LOG(LogTemp, Display, TEXT("Length of Overlapping Actors: %s"), *FString::FromInt(overlappingActors.Num()));
+
         if (overlappingActors.Num() > 0){
             for (AActor* actor : overlappingActors) {
                 if (!actor->ActorHasTag(CryptRaiderGameplayTags::GRABBED_TAG)) {
@@ -69,16 +78,35 @@ void UDungeonEventTriggerComponent::TickComponent(float DeltaTime, ELevelTick Ti
             }
         }
 
-		for (AActor* actor : overlappingNonGrabbedActors) {
-			TArray<UPrimitiveComponent*> primitiveComponents;
-			actor->GetComponents<UPrimitiveComponent>(primitiveComponents);
+        //UE_LOG(LogTemp, Display, TEXT("Length of Overlapping Non Grabbed Actors: %s"), *FString::FromInt(overlappingNonGrabbedActors.Num()));
 
-			for (UPrimitiveComponent* component : primitiveComponents) {
-				if (component->IsSimulatingPhysics()) {
-					totalMass += component->GetMass();
-				}
-			}
+		for (AActor* actor : overlappingNonGrabbedActors) {
+
+            if (!actor->ActorHasTag(CryptRaiderGameplayTags::PLAYER)) {
+                TArray<UPrimitiveComponent*> primitiveComponents;
+                actor->GetComponents<UPrimitiveComponent>(primitiveComponents);
+
+                for (UPrimitiveComponent* component : primitiveComponents) {
+                    if (component->IsSimulatingPhysics()) {
+                        totalMass += component->GetMass();
+                    }
+                }
+            } else {
+                ACryptRaiderCharacter* player =  Cast<ACryptRaiderCharacter>(actor);
+
+                totalMass += player->GetMass();
+
+                // UPrimitiveComponent* primitive = Cast<UPrimitiveComponent>(actor->GetRootComponent());
+
+                // if (primitive)
+                // {
+                //     totalMass += primitive->GetMass();
+                // }
+
+            }
 		}
+
+        UE_LOG(LogTemp, Display, TEXT("Total Mass: %s"), *FString::FromInt(totalMass));
 
 		if (totalMass >= massBasedTriggerData.massNeeded) {
 			dungeonEvent.SetIsActive(true);
@@ -95,9 +123,21 @@ AActor* UDungeonEventTriggerComponent::CheckOverlappingActorsForTag() const {
     GetOverlappingActors(overlappingActors);
 
     if (overlappingActors.Num() > 0){
+
+        bool HasMatchingTag = false;
+
+        // for (const FName& Tag : ListOfTagNamesForTrigger)
+        // {
+        //     if (actor->ActorHasTag(Tag))
+        //     {
+        //         HasMatchingTag = true;
+        //         break;
+        //     }
+        // }
+
         for (AActor* actor : overlappingActors) {
-           if ((actor->ActorHasTag(placementBasedTriggerData.tagNameForTrigger) && !actor->ActorHasTag(CryptRaiderGameplayTags::GRABBED_TAG)) 
-           || (actor->ActorHasTag(placementBasedTriggerData.tagNameForTrigger) && !placementBasedTriggerData.onlyReactOnRelease && DungeonEventTriggerType == EDungeonEventTriggerType::PlacementBased)) {
+           if ((HasMatchingTag && !actor->ActorHasTag(CryptRaiderGameplayTags::GRABBED_TAG)) 
+           || (HasMatchingTag && !placementBasedTriggerData.onlyReactOnRelease && DungeonEventTriggerType == EDungeonEventTriggerType::PlacementBased)) {
                 return actor;
            }
         }

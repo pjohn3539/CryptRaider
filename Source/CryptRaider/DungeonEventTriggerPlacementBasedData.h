@@ -14,7 +14,7 @@ struct FDungeonEventTriggerPlacementBasedData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	FName tagNameForTrigger = "Key";
+	TArray<FName> ListOfTagNamesForTrigger;
 
 	UPROPERTY(EditAnywhere)
 	bool onlyReactOnRelease = true;
